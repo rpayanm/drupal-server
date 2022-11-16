@@ -20,6 +20,7 @@ function copy_nginx_config() {
 
   cp "nginx-conf/$CONF_FILE" "$PROJECT_PATH/nginx-conf/nginx.conf"
   sed -i "s/your_domain/$DOMAIN/g" "$PROJECT_PATH/nginx-conf/nginx.conf"
+  sed -i "s/webroot/$WEBROOT/g" "$PROJECT_PATH/nginx-conf/nginx.conf"
 }
 
 function copy_docker_compose_config() {
@@ -61,7 +62,7 @@ if [[ -f "$CONFIG_FILE" ]]; then
   source $CONFIG_FILE
 fi
 
-if [[ -z ${DOMAIN+x} && -z ${EMAIL+x} && -z ${PROJECT_PATH+x} ]]; then
+if [[ -z ${DOMAIN+x} && -z ${EMAIL+x} && -z ${PROJECT_PATH+x} && -z ${WEBROOT+x} ]]; then
   ASK_VARS=true
 else
   while true; do
@@ -93,8 +94,8 @@ if [ "$ASK_VARS" = true ]; then
 
     if [[ -z "$DOMAIN" ]]; then
       echo "Domain cannot be empty"
-    elif [[ ! "$DOMAIN" =~ $validate_domain ]]; then
-      echo "Domain is not valid"
+#    elif [[ ! "$DOMAIN" =~ $validate_domain ]]; then
+#      echo "Domain is not valid"
     else
       break
     fi
@@ -127,8 +128,19 @@ if [ "$ASK_VARS" = true ]; then
     fi
   done
 
+  # Ask for the webroot.
+  while true; do
+    read -p "What is your webroot path?: " WEBROOT
+
+    if [[ -z "$WEBROOT" ]]; then
+     echo "Project path cannot be empty"
+    elif
+     break
+    fi
+  done
+
   # Save values
-  echo -e "DOMAIN=$DOMAIN\nEMAIL=$EMAIL\nPROJECT_PATH=$PROJECT_PATH\n" > /tmp/drupal-server
+  echo -e "DOMAIN=$DOMAIN\nEMAIL=$EMAIL\nPROJECT_PATH=$PROJECT_PATH\nWEBROOT=$WEBROOT" > /tmp/drupal-server
 fi
 
 # Create the project.
