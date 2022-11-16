@@ -134,7 +134,7 @@ if [ "$ASK_VARS" = true ]; then
 
     if [[ -z "$WEBROOT" ]]; then
      echo "Project path cannot be empty"
-    elif
+    else
      break
     fi
   done
