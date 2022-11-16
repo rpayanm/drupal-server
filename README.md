@@ -3,7 +3,7 @@ Drupal Server
 
 Requirements
 ------------
-1. Enter to your VPN server (Linux).
+1. Enter to your VPS server (Linux).
 2. [Install docker-compose](https://docs.docker.com/compose/install/other/).
 
 Installation
