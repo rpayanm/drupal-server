@@ -20,7 +20,6 @@ function copy_nginx_config() {
 
   cp "nginx-conf/$CONF_FILE" "$PROJECT_PATH/nginx-conf/nginx.conf"
   sed -i "s/your_domain/$DOMAIN/g" "$PROJECT_PATH/nginx-conf/nginx.conf"
-  sed -i "s/webroot/$WEBROOT/g" "$PROJECT_PATH/nginx-conf/nginx.conf"
 }
 
 function copy_docker_compose_config() {
@@ -36,6 +35,7 @@ function copy_docker_compose_config() {
   sed -i "s/sammy@your_domain/$EMAIL/g" "$PROJECT_PATH/docker-compose.yml"
   sed -i "s/your_domain/$DOMAIN/g" "$PROJECT_PATH/docker-compose.yml"
   sed -i "s|drupal-data|$PROJECT_PATH|g" "$PROJECT_PATH/docker-compose.yml"
+  sed -i "s/webroot/$WEBROOT/g" "$PROJECT_PATH/docker-compose.yml"
 }
 
 # Ask for what to do.
@@ -62,12 +62,17 @@ if [[ -f "$CONFIG_FILE" ]]; then
   source $CONFIG_FILE
 fi
 
+DOMAIN="abcabc.com"
+EMAIL="rpayanm@gmail.com"
+PROJECT_PATH="/home/rpayanm/work/websites/drupal-server/drupal"
+WEBROOT="web"
+
 if [[ -z ${DOMAIN+x} && -z ${EMAIL+x} && -z ${PROJECT_PATH+x} && -z ${WEBROOT+x} ]]; then
   ASK_VARS=true
 else
   while true; do
     echo "We found that you have already set the variables before:"
-    echo -e "DOMAIN=$DOMAIN\nEMAIL=$EMAIL\nPROJECT_PATH=$PROJECT_PATH\n";
+    cat $CONFIG_FILE;
     read -p "Do you want to use the same variables? (Y/n) " USE_SAME_VARS
     case $USE_SAME_VARS in
       [Yy]*|"")
@@ -83,10 +88,6 @@ else
 fi
 
 if [ "$ASK_VARS" = true ]; then
-#  DOMAIN=""
-#  EMAIL=""
-#  PROJECT_PATH=""
-
   # Ask for the domain name.
   validate_domain="^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$"
   while true; do

@@ -11,6 +11,7 @@ services:
       - db-data:/var/lib/mysql
     networks:
       - internal
+
   drupal:
     image: drupal:php8.1-fpm-alpine
     container_name: drupal
@@ -21,7 +22,9 @@ services:
       - internal
       - external
     volumes:
-      - drupal-data:/var/www/html
+      # /var/www/html is a symlink to /opt/drupal/web
+      - drupal-data:/opt/drupal
+
   webserver:
     image: nginx:stable
     container_name: webserver
@@ -32,11 +35,12 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - drupal-data:/var/www/html
+      - drupal-data/webroot:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
       - certbot-etc:/etc/letsencrypt
     networks:
       - external
+
   certbot:
     depends_on:
       - webserver
@@ -44,7 +48,7 @@ services:
     container_name: certbot
     volumes:
       - certbot-etc:/etc/letsencrypt
-      - drupal-data:/var/www/html
+      - drupal-data/webroot:/var/www/html
     command: certonly --webroot --webroot-path=/var/www/html --email sammy@your_domain --agree-tos --no-eff-email --force-renewal -d your_domain -d www.your_domain
 
 networks:
