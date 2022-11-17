@@ -35,7 +35,7 @@ function copy_docker_compose_config() {
   sed -i "s/sammy@your_domain/$EMAIL/g" "$PROJECT_PATH/docker-compose.yml"
   sed -i "s/your_domain/$DOMAIN/g" "$PROJECT_PATH/docker-compose.yml"
   sed -i "s|drupal-data|$PROJECT_PATH|g" "$PROJECT_PATH/docker-compose.yml"
-  sed -i "s/webroot/$WEBROOT/g" "$PROJECT_PATH/docker-compose.yml"
+  sed -i "s/-webroot-/$WEBROOT/g" "$PROJECT_PATH/docker-compose.yml"
 }
 
 # Ask for what to do.

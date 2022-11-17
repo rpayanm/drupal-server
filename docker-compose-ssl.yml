@@ -35,7 +35,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - drupal-data/webroot:/var/www/html
+      - drupal-data/-webroot-:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
       - certbot:/etc/letsencrypt
     networks:
@@ -48,7 +48,7 @@ services:
     container_name: certbot
     volumes:
       - certbot:/etc/letsencrypt
-      - drupal-data/webroot:/var/www/html
+      - drupal-data/-webroot-:/var/www/html
     command: certonly --webroot --webroot-path=/var/www/html --email sammy@your_domain --agree-tos --no-eff-email --force-renewal -d your_domain -d www.your_domain
 
 networks:
