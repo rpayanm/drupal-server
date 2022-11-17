@@ -37,7 +37,7 @@ services:
     volumes:
       - drupal-data/webroot:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
-      - certbot-etc:/etc/letsencrypt
+      - certbot:/etc/letsencrypt
     networks:
       - external
 
@@ -47,7 +47,7 @@ services:
     image: certbot/certbot
     container_name: certbot
     volumes:
-      - certbot-etc:/etc/letsencrypt
+      - certbot:/etc/letsencrypt
       - drupal-data/webroot:/var/www/html
     command: certonly --webroot --webroot-path=/var/www/html --email sammy@your_domain --agree-tos --no-eff-email --force-renewal -d your_domain -d www.your_domain
 
@@ -59,4 +59,4 @@ networks:
 
 volumes:
   db-data:
-  certbot-etc:
+  certbot:
