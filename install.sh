@@ -58,14 +58,11 @@ do
 done
 
 CONFIG_FILE="/tmp/drupal-server";
+#CONFIG_FILE="/.test/data";
+
 if [[ -f "$CONFIG_FILE" ]]; then
   source $CONFIG_FILE
 fi
-
-DOMAIN="abcabc.com"
-EMAIL="rpayanm@gmail.com"
-PROJECT_PATH="/home/rpayanm/work/websites/drupal-server/drupal"
-WEBROOT="web"
 
 if [[ -z ${DOMAIN+x} && -z ${EMAIL+x} && -z ${PROJECT_PATH+x} && -z ${WEBROOT+x} ]]; then
   ASK_VARS=true
