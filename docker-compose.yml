@@ -34,7 +34,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - drupal-data/-webroot-:/var/www/html
+      - drupal-data/-web-root-:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
     networks:
       - external
