@@ -151,8 +151,8 @@ fi
 
 # Add SSL.
 if [[ $REPLY == "2" ]]; then
+  cd "$PROJECT_PATH" && docker-compose exec certbot certonly --webroot -w /var/www/html --email "$EMAIL" --agree-tos --no-eff-email -d "$DOMAIN" -d www."$DOMAIN" && cd ..
   copy_nginx_config "ssl";
-  copy_docker_compose_config "ssl";
   cp ssl_renew.sh "$PROJECT_PATH/ssl_renew.sh"
   chmod +x "$PROJECT_PATH/ssl_renew.sh"
   sed -i "s|project_path|$PROJECT_PATH|g" "$PROJECT_PATH/ssl_renew.sh"

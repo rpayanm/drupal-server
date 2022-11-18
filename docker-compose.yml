@@ -33,11 +33,22 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - drupal-data/-web-root-:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
+      - /etc/letsencrypt:/etc/letsencrypt
     networks:
       - external
+
+  certbot:
+    depends_on:
+      - webserver
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - drupal-data/-web-root-:/var/www/html
 
 networks:
   external:
