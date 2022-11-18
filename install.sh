@@ -38,6 +38,8 @@ function copy_docker_compose_config() {
   sed -i "s/-web-root-/$WEBROOT/g" "$PROJECT_PATH/docker-compose.yml"
 }
 
+CURRENT_PATH=$(pwd)
+
 # Ask for what to do.
 PS3='Please enter your choice: '
 options=("Create the project (first time)" "Add SSL" "Quit")
@@ -151,7 +153,9 @@ fi
 
 # Add SSL.
 if [[ $REPLY == "2" ]]; then
-  cd "$PROJECT_PATH" && docker-compose exec certbot certonly --webroot -w /var/www/html --email "$EMAIL" --agree-tos --no-eff-email -d "$DOMAIN" -d www."$DOMAIN" && cd ..
+  cd "$PROJECT_PATH" && docker-compose run --rm certbot certonly --webroot -w /var/www/html --email "$EMAIL" --agree-tos --no-eff-email -d "$DOMAIN" -d www."$DOMAIN"
+  cd "$PROJECT_PATH" && docker-compose run --rm certbot certonly --webroot -w /var/www/html --email "$EMAIL" --agree-tos --no-eff-email -d www."$DOMAIN"
+  cd "$CURRENT_PATH"
   copy_nginx_config "ssl";
   cp ssl_renew.sh "$PROJECT_PATH/ssl_renew.sh"
   chmod +x "$PROJECT_PATH/ssl_renew.sh"
